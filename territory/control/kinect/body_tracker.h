@@ -1,16 +1,12 @@
 #pragma once
 
-#define BODY_COUNT 6
-#define JointType_Count 25
-#define byte uint8_t
-
 #include <SFML/System.hpp>
 #include <vector>
 #include <unordered_map>
-//#include <windows.h>
+#include <windows.h>
 
 // Kinect Header files
-//#include <Kinect.h>
+#include <Kinect.h>
 
 #include "../../easylogging/easylogging++.h"
 #include "../../util.hpp"
@@ -61,13 +57,13 @@ namespace Limbs
 
 class BodyTracker
 {
-    static const int cDepthWidth = 512;
+public:
+	static const int cDepthWidth = 512;
     static const int cDepthHeight = 424;
 
     // Timestamp is measured in 100-nanosecond units
     static const int timeStampScale = 10000000;
 
-public:
     /// <summary>
     /// Constructor
     /// </summary>
@@ -92,27 +88,28 @@ public:
     /// </summary>
     void                    Update(bool getMask);
 
-    byte *					getBodyMask();
+	std::vector<std::vector<int>>& getBodyMask();
     sf::Vector2f            getLimbPointsXY(Limbs::Type limb, bool left);
     float                   getLimbDepthPoints(Limbs::Type limb, bool left);
     sf::Vector2f			getLimbVelocitiesXY(Limbs::Type limb, bool left);
+	sf::Vector2f            GetProjection(const sf::Vector2f point);
 
 private:
     // Timestamp of previous frame
-    // INT64                   m_nPreviousTime;
-    //
-    // // Current Kinect
-    // IKinectSensor*          m_pKinectSensor;
-    // ICoordinateMapper*      m_pCoordinateMapper;
-    //
-    // // Body reader
-    // IBodyFrameReader*       m_pBodyFrameReader;
-    //
-    // // Body index reader
-    // IBodyIndexFrameReader* m_pBodyIndexFrameReader;
+	INT64                   m_nPreviousTime;
+    
+	// Current Kinect
+	IKinectSensor*          m_pKinectSensor;
+	ICoordinateMapper*      m_pCoordinateMapper;
+    
+	// Body reader
+	IBodyFrameReader*       m_pBodyFrameReader;
+    
+	// Body index reader
+	IBodyIndexFrameReader*  m_pBodyIndexFrameReader;
 
     // Joint positions for all bodies
-    // Joint trackPoints[BODY_COUNT][JointType_Count];
+    Joint trackPoints[BODY_COUNT][JointType_Count];
     sf::Vector2f trackPointsXY[BODY_COUNT][JointType_Count];
     float trackDepthPoint[BODY_COUNT][JointType_Count];
 
@@ -131,13 +128,16 @@ private:
     float delta;
 
     // Body mask
-    byte bodyMask[cDepthWidth * cDepthHeight];
+	std::vector<std::vector<int>> bodyTexturePixels;
+
+	// Flag to log frame description only once
+	bool logDescription;
 
     /// <summary>
     /// Initializes the default Kinect sensor
     /// </summary>
     /// <returns>S_OK on success, otherwise failure code</returns>
-    // HRESULT                 InitializeDefaultSensor();
+    HRESULT                 InitializeDefaultSensor();
 
     /// <summary>
     /// Handle new body data
@@ -145,7 +145,7 @@ private:
     /// <param name="nBodyCount">body data count</param>
     /// <param name="ppBodies">body data in frame</param>
     /// </summary>
-    // void                    ProcessBody(INT64 nTime, int nBodyCount, IBody** ppBodies);
+    void                    ProcessBody(INT64 nTime, int nBodyCount, IBody** ppBodies);
 
     /// <summary>
     /// Converts a body point to screen space
@@ -154,11 +154,12 @@ private:
     /// <param name="width">width (in pixels) of output buffer</param>
     /// <param name="height">height (in pixels) of output buffer</param>
     /// <returns>point in screen-space</returns>
-    // sf::Vector2f            BodyToScreen(const CameraSpacePoint& bodyPoint, int width, int height);
+    sf::Vector2f            BodyToScreen(const CameraSpacePoint& bodyPoint, int width, int height);
 
-    sf::Vector2f            GetProjection(const sf::Vector2f point);
     sf::Vector2f            LimbPointsXY(int i, Limbs::Type limb);
     float                   LimbDepthPoint(int i, Limbs::Type limb);
+
+	//void					logBodyIndexFrameDescription();
 
     std::unordered_map<Limbs::Type, std::vector<Joints::Type>> limbJoints = {
         {Limbs::Type::LEFT_HAND, {Joints::Type::HANDLEFT, Joints::Type::WRISTLEFT,
@@ -166,6 +167,6 @@ private:
         {Limbs::Type::RIGHT_HAND, {Joints::Type::HANDRIGHT, Joints::Type::WRISTRIGHT,
                                    Joints::Type::HANDTIPRIGHT, Joints::Type::THUMBRIGHT}},
         {Limbs::Type::LEFT_FOOT, {Joints::Type::FOOTLEFT, Joints::Type::ANKLELEFT}},
-        {Limbs::Type::LEFT_HAND, {Joints::Type::FOOTRIGHT, Joints::Type::ANKLERIGHT}},
+        {Limbs::Type::RIGHT_FOOT, {Joints::Type::FOOTRIGHT, Joints::Type::ANKLERIGHT}},
     };
 };

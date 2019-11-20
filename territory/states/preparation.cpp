@@ -15,7 +15,7 @@ void StatePreparation::update(const float delta)
     world.left.update();
     world.right.update();
     world.left_ready.update(world.left.paddles());
-    world.right_ready.update(world.right.paddles());
+    world.right_ready.update(world.left.paddles());
 }
 
 void StatePreparation::render()

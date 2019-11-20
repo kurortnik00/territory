@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{951225A7-73B6-4FF8-A745-3C7F4D19D7BB}</ProjectGuid>
     <RootNamespace>territory</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -84,7 +84,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\aleks\Desktop\kolya\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\include;C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\inc</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ELPP_FRESH_LOG_FILE;NOMINMAX;_CRT_SECURE_NO_WARNINGS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>C:\Users\aleks\Desktop\kolya\SFML-2.5.1-windows-vc15-64-bit\SFML-2.5.1\lib;C:\Program Files\Microsoft SDKs\Kinect\v2.0_1409\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>kinect20.lib;sfml-graphics-d.lib;sfml-system-d.lib;sfml-window-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -115,6 +121,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="control\kinect\body_tracker.cpp" />
+    <ClCompile Include="easylogging\easylogging++.cc" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\board.cpp" />
+    <ClCompile Include="objects\map.cpp" />
+    <ClCompile Include="objects\paddle.cpp" />
+    <ClCompile Include="objects\player.cpp" />
+    <ClCompile Include="objects\ready_button.cpp" />
+    <ClCompile Include="objects\world.cpp" />
+    <ClCompile Include="states\game.cpp" />
+    <ClCompile Include="states\manager.cpp" />
+    <ClCompile Include="states\preparation.cpp" />
+    <ClCompile Include="states\result.cpp" />
+    <ClCompile Include="util.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="control\kinect\body_tracker.h" />
+    <ClInclude Include="control\kinect\resource.h" />
+    <ClInclude Include="control\kinect\stdafx.h" />
+    <ClInclude Include="easylogging\easylogging++.h" />
+    <ClInclude Include="objects\board.hpp" />
+    <ClInclude Include="objects\map.hpp" />
+    <ClInclude Include="objects\paddle.hpp" />
+    <ClInclude Include="objects\player.hpp" />
+    <ClInclude Include="objects\ready_button.hpp" />
+    <ClInclude Include="objects\world.hpp" />
+    <ClInclude Include="states\manager.hpp" />
+    <ClInclude Include="states\state.hpp" />
+    <ClInclude Include="util.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

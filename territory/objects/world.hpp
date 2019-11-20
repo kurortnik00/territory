@@ -1,8 +1,10 @@
 #pragma once
 
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "../control/kinect/body_tracker.h"
 #include "board.hpp"
+#include "map.hpp"
 #include "player.hpp"
 #include "ready_button.hpp"
 
@@ -18,11 +20,13 @@ public:
 
     int width_, height_;
     float update_time;
+	BodyTracker& kinect;
     bool score_changed, paused, kinectControl, use_paddle_velocity;
     sf::RenderWindow mWindow;
-    sf::Vector2f puck_velocity;
+	sf::Texture bodyTexture;
     Player left, right;
     Scoreboard board;
+	Map map;
     ReadyButton left_ready, right_ready;
     sf::RectangleShape left_border, top_border, right_border;
 };

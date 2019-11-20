@@ -13,6 +13,7 @@ World::World(float width, float height, float update_time, BodyTracker & kinect,
     : width_(width)
     , height_(height)
     , update_time (update_time)
+	, kinect (kinect)
     , score_changed(false)
     , paused(false)
     , kinectControl (kinectControl)
@@ -21,6 +22,7 @@ World::World(float width, float height, float update_time, BodyTracker & kinect,
     , left (height / 20, sf::Color(204, 0, 0), update_time, kinect, true, kinectControl)
     , right (height / 20, sf::Color(0, 102, 0), update_time, kinect, false, kinectControl)
     , board (&left, &right, 0.5)
+	, map (width, height, 20)
     , left_ready (sf::Vector2f(width / 4, height / 2), sf::Vector2f(width / 10, width / 10))
     , right_ready (sf::Vector2f(width * 3 / 4, height / 2), sf::Vector2f(width / 10, width / 10))
 {
@@ -38,6 +40,12 @@ World::World(float width, float height, float update_time, BodyTracker & kinect,
     left_border.setPosition(0.f, 0.f);
     left_border.setSize(sf::Vector2f(800.f, 2.f));
     left_border.setFillColor(sf::Color::White);
+
+	if (!bodyTexture.create(400, 400))
+	{
+		LOG(ERROR) << "Failed to create body texture";
+	}
+	map.setTexture(bodyTexture);
 }
 
 
@@ -53,31 +61,25 @@ void World::processEvents()
 
 void World::update()
 {
-    left.update();
+	map.update(kinect);
+    /*left.update();
     right.update();
 
     score_changed = false;
-    board.update(update_time, score_changed);
+    board.update(update_time, score_changed);*/
 }
 
 void World::render()
 {
     mWindow.clear();
 
-    mWindow.draw(left_border);
+    /*mWindow.draw(left_border);
     mWindow.draw(right_border);
     mWindow.draw(top_border);
 
-    for (int i = 0; i < left.n_limbs; i++)
-    {
-        mWindow.draw(left.paddles()[i].shape());
-    }
-    for (int i = 0; i < right.n_limbs; i++)
-    {
-        mWindow.draw(right.paddles()[i].shape());
-    }
+    board.render(mWindow);*/
 
-    board.render(mWindow);
+	map.render(mWindow);
 
     mWindow.display();
 }

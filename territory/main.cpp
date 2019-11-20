@@ -11,12 +11,12 @@ INITIALIZE_EASYLOGGINGPP
 
 int main()
 {
-    bool kinectControl = false;
-    sf::Time update_time = sf::seconds(1.f / 60.f);
+    bool kinectControl = true;
+    sf::Time update_time = sf::seconds(1.f / 30.f);
 
     BodyTracker kinect;
-    World world(1366.f, 768.f, update_time.asSeconds(), kinect, kinectControl);
-    StateManager manager(States::Type::Preparation, world, kinect, kinectControl);
+    World world(1920.f, 1080.f, update_time.asSeconds(), kinect, kinectControl);
+    StateManager manager(States::Type::Game, world, kinect, kinectControl);
 
     sf::Clock clock;
     sf::Time elapsed = sf::Time::Zero;

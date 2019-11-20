@@ -63,7 +63,7 @@ void StateManager::update(const float delta)
     State * current = container[current_state];
     if (kinectControl)
     {
-        kinect.Update(false);
+        kinect.Update(true);
     }
     current->update(delta);
     //current->log();
