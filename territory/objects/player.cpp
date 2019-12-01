@@ -46,11 +46,23 @@ void Player::handleInput()
     }
 }
 
-void Player::update()
+void Player::update(Map & map)
 {
-    for (int i = 0; i < n_limbs; i++)
+    for (int k = 0; k < n_limbs; k++)
     {
-        paddles_[i].update(kinect, static_cast<Limbs::Type>(i), left, kinectControl);
+        paddles_[k].update(kinect, static_cast<Limbs::Type>(k), left, kinectControl);
+
+		int size = paddles_[k].radius() / map.size();
+		int x_center = paddles_[k].position().x / map.size();
+		int y_center = paddles_[k].position().y / map.size();
+		
+		for (int i = x_center - size; i <= x_center + size; i++)
+		{
+			for (int j = y_center - size; j <= y_center + size; j++)
+			{
+				map.setEnabled(i, j);
+			}
+		}
     }
 }
 

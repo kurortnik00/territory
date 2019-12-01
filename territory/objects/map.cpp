@@ -2,11 +2,16 @@
 
 Map::Map(float width, float height, int size)
 	: width_ (width), height_ (height), size_ (size)
-	, n_rows (height_ / size_), n_cols (width_ / size_)
+	, n_rows (width_ / size_), n_cols (height_ / size_)
 	, map_ (n_rows, std::vector<sf::Sprite>(n_cols))
 	, enabled_ (n_rows, std::vector<int>(n_cols))
 {
 	
+}
+
+int Map::size()
+{
+	return size_;
 }
 
 void Map::setTexture(sf::Texture & texture)
@@ -16,26 +21,37 @@ void Map::setTexture(sf::Texture & texture)
 		for (int j = 0; j < n_cols; j++)
 		{
 			map_[i][j].setTexture(texture);
-			map_[i][j].setPosition(j * size_, i * size_);
-			map_[i][j].setScale(size_ / texture.getSize().x, size_ / texture.getSize().y);
-			map_[i][j].setColor(sf::Color::Red);
+			map_[i][j].setPosition(i * size_, j * size_);
+			map_[i][j].setScale(static_cast<float>(size_) / texture.getSize().x, 
+								static_cast<float>(size_) / texture.getSize().y);
 		}
 	}
 }
 
-void Map::update(BodyTracker & kinect)
+void Map::update(BodyTracker & kinect, bool kinectControl)
 {
-	auto& bodyMask = kinect.getBodyMask();
-	for (int i = 0; i < bodyMask.size(); i++)
+	if (kinectControl)
 	{
-		for (int j = 0; j < bodyMask[i].size(); j++)
+		auto& bodyMask = kinect.getBodyMask();
+		for (int i = 0; i < bodyMask.size(); i++)
 		{
-			if (bodyMask[i][j] != 255)
+			for (int j = 0; j < bodyMask[i].size(); j++)
 			{
-				sf::Vector2i pos = getCell(kinect.GetProjection(sf::Vector2f(i, j)));
-				enabled_[pos.x][pos.y] = 1;
+				if (bodyMask[i][j] != 255)
+				{
+					sf::Vector2i pos = getCell(kinect.GetProjection(sf::Vector2f(i, j)));
+					setEnabled(pos.x, pos.y);
+				}
 			}
 		}
+	}
+}
+
+void Map::setEnabled(int i, int j)
+{
+	if ((i >= 0) && (i < n_rows) && (j >= 0) && (j < n_cols))
+	{
+		enabled_[i][j] = 1;
 	}
 }
 
@@ -45,7 +61,7 @@ void Map::render(sf::RenderWindow& window)
 	{
 		for (int j = 0; j < n_cols; j++)
 		{
-			if (enabled_[i][j])
+			if (enabled_[i][j] > 0)
 			{
 				window.draw(map_[i][j]);
 			}

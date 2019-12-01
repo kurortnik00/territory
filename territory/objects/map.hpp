@@ -12,8 +12,10 @@ struct Map
 {
 public:
 	Map(float width, float height, int size);
+	int size();
 	void setTexture(sf::Texture& texture);
-	void update(BodyTracker& kinect);
+	void update(BodyTracker& kinect, bool kinectControl);
+	void setEnabled(int i, int j);
 	void render(sf::RenderWindow& window);
 
 private:

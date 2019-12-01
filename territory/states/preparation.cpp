@@ -12,10 +12,10 @@ void StatePreparation::update(const float delta)
 {
     State::update(delta);
 
-    world.left.update();
-    world.right.update();
+    world.left.update(world.map);
+    world.right.update(world.map);
     world.left_ready.update(world.left.paddles());
-    world.right_ready.update(world.left.paddles());
+    world.right_ready.update(world.right.paddles());
 }
 
 void StatePreparation::render()

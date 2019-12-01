@@ -23,7 +23,9 @@ public:
 	BodyTracker& kinect;
     bool score_changed, paused, kinectControl, use_paddle_velocity;
     sf::RenderWindow mWindow;
+	sf::Sprite bodySprite;
 	sf::Texture bodyTexture;
+	sf::Image bodyImage;
     Player left, right;
     Scoreboard board;
 	Map map;

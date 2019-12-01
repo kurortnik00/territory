@@ -41,11 +41,12 @@ World::World(float width, float height, float update_time, BodyTracker & kinect,
     left_border.setSize(sf::Vector2f(800.f, 2.f));
     left_border.setFillColor(sf::Color::White);
 
-	if (!bodyTexture.create(400, 400))
+	if (!bodyTexture.loadFromFile("media/textures/tiles.jpg", sf::IntRect(0, 0, 97, 97)))
 	{
 		LOG(ERROR) << "Failed to create body texture";
 	}
 	map.setTexture(bodyTexture);
+	bodySprite.setTexture(bodyTexture);
 }
 
 
@@ -61,11 +62,11 @@ void World::processEvents()
 
 void World::update()
 {
-	map.update(kinect);
-    /*left.update();
-    right.update();
+	map.update(kinect, kinectControl);
+    left.update(map);
+    right.update(map);
 
-    score_changed = false;
+    /*score_changed = false;
     board.update(update_time, score_changed);*/
 }
 
@@ -73,13 +74,16 @@ void World::render()
 {
     mWindow.clear();
 
-    /*mWindow.draw(left_border);
-    mWindow.draw(right_border);
-    mWindow.draw(top_border);
-
-    board.render(mWindow);*/
-
 	map.render(mWindow);
+	for (int i = 0; i < left.paddles().size(); i++)
+	{
+		mWindow.draw(left.paddles()[i].shape());
+	}
+	for (int i = 0; i < right.paddles().size(); i++)
+	{
+		mWindow.draw(right.paddles()[i].shape());
+	}
+	//mWindow.draw(bodySprite);
 
     mWindow.display();
 }
