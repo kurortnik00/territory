@@ -1,8 +1,10 @@
 #include "map.hpp"
+#include "player.hpp"
 
-Map::Map(float width, float height, int size)
+Map::Map(float width, float height, int size, Player & left, Player & right)
 	: width_ (width), height_ (height), size_ (size)
 	, n_rows (width_ / size_), n_cols (height_ / size_)
+	, left_(left), right_ (right)
 	, map_ (n_rows, std::vector<sf::Sprite>(n_cols))
 	, enabled_ (n_rows, std::vector<int>(n_cols))
 {
@@ -40,18 +42,50 @@ void Map::update(BodyTracker & kinect, bool kinectControl)
 				if (bodyMask[i][j] != 255)
 				{
 					sf::Vector2i pos = getCell(kinect.GetProjection(sf::Vector2f(i, j)));
-					setEnabled(pos.x, pos.y);
+					bool is_left = (bodyMask[i][j] == 1);
+					setEnabled(pos.x, pos.y, is_left);
 				}
 			}
 		}
 	}
 }
 
-void Map::setEnabled(int i, int j)
+void Map::setEnabled(int i, int j, bool left)
 {
 	if ((i >= 0) && (i < n_rows) && (j >= 0) && (j < n_cols))
 	{
-		enabled_[i][j] = 1;
+		if (left)
+		{
+			// Update score
+			if (enabled_[i][j] == 2)
+			{
+				right_.lostCell();
+			}
+			if (enabled_[i][j] != 1)
+			{
+				left_.capturedCell();
+			}
+
+			// Update map
+			enabled_[i][j] = 1;
+			map_[i][j].setColor(Config::red);
+		}
+		else
+		{
+			// Update score
+			if (enabled_[i][j] == 1)
+			{
+				left_.lostCell();
+			}
+			if (enabled_[i][j] != 2)
+			{
+				right_.capturedCell();
+			}
+
+			// Update map
+			enabled_[i][j] = 2;
+			map_[i][j].setColor(Config::green);
+		}
 	}
 }
 

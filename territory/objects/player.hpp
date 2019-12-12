@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "../control/kinect/body_tracker.h"
-#include "map.hpp"
 #include "paddle.hpp"
+
+struct Map;
 
 struct Player
 {
@@ -16,7 +17,8 @@ public:
     void update(Map & map);
     std::vector<Paddle> & paddles();
     unsigned score();
-    void scored();
+    void capturedCell();
+    void lostCell();
     void reset();
     int n_limbs;
 

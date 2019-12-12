@@ -159,6 +159,8 @@ private:
     sf::Vector2f            LimbPointsXY(int i, Limbs::Type limb);
     float                   LimbDepthPoint(int i, Limbs::Type limb);
 
+    void                    SimplifyBodyMask();
+
 	//void					logBodyIndexFrameDescription();
 
     std::unordered_map<Limbs::Type, std::vector<Joints::Type>> limbJoints = {

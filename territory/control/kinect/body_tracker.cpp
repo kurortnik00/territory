@@ -135,7 +135,7 @@ void BodyTracker::Update(bool getMask)
 			{
 				for (int j = 0; j < BodyTracker::cDepthHeight; j++)
 				{
-					bodyTexturePixels[i][j] = bodyMask[i * BodyTracker::cDepthHeight + j];
+                    bodyTexturePixels[i][j] = bodyMask[i * BodyTracker::cDepthHeight + j];
 				}
 			}
         }
@@ -413,4 +413,26 @@ sf::Vector2f BodyTracker::getLimbVelocitiesXY(Limbs::Type limb, bool left)
 {
     int idx = (left) ? left_idx : right_idx;
     return limbVelocitiesXY[idx][static_cast<int>(limb)];
+}
+
+void BodyTracker::SimplifyBodyMask()
+{
+    for (int i = 0; i < BodyTracker::cDepthWidth; i++)
+    {
+        for (int j = 0; j < BodyTracker::cDepthHeight; j++)
+        {
+            if (bodyTexturePixels[i][j] == left_idx)
+            {
+                bodyTexturePixels[i][j] = 1;
+            }
+            else if (bodyTexturePixels[i][j] == right_idx)
+            {
+                bodyTexturePixels[i][j] = 2;
+            }
+            else
+            {
+                bodyTexturePixels[i][j] = 0;
+            }
+        }
+    }
 }

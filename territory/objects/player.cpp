@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "../control/kinect/body_tracker.h"
+#include "map.hpp"
 #include "player.hpp"
 
 
@@ -60,7 +61,7 @@ void Player::update(Map & map)
 		{
 			for (int j = y_center - size; j <= y_center + size; j++)
 			{
-				map.setEnabled(i, j);
+				map.setEnabled(i, j, left);
 			}
 		}
     }
@@ -76,9 +77,16 @@ unsigned Player::score()
     return score_;
 }
 
-void Player::scored()
+void Player::capturedCell()
 {
+    LOG(INFO) << "Score up " << score_;
     score_++;
+}
+
+void Player::lostCell()
+{
+    LOG(INFO) << "Score down " << score_;
+    score_--;
 }
 
 void Player::reset()
