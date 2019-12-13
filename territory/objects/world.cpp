@@ -19,10 +19,10 @@ World::World(float width, float height, float update_time, BodyTracker & kinect,
     , kinectControl (kinectControl)
     , use_paddle_velocity(false)
     , mWindow(sf::VideoMode(width, height), "Aerohockey", sf::Style::None)
-    , left (height / 20, sf::Color(204, 0, 0), update_time, kinect, true, kinectControl)
-    , right (height / 20, sf::Color(0, 102, 0), update_time, kinect, false, kinectControl)
-    , board (&left, &right, 0.5)
-	, map (width, height, 20)
+    , left (height / 20, Config::red, update_time, kinect, true, kinectControl)
+    , right (height / 20, Config::green, update_time, kinect, false, kinectControl)
+    , board (left, right, 0.5)
+	, map (width, height, 30, left, right)
     , left_ready (sf::Vector2f(width / 4, height / 2), sf::Vector2f(width / 10, width / 10))
     , right_ready (sf::Vector2f(width * 3 / 4, height / 2), sf::Vector2f(width / 10, width / 10))
 {
@@ -63,11 +63,11 @@ void World::processEvents()
 void World::update()
 {
 	map.update(kinect, kinectControl);
-    left.update(map);
-    right.update(map);
-
-    /*score_changed = false;
-    board.update(update_time, score_changed);*/
+    if (!kinectControl)
+    {
+        left.update(map);
+        right.update(map);
+    }
 }
 
 void World::render()

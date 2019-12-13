@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Scoreboard::Scoreboard(Player * left, Player * right, float gameDuration)
+Scoreboard::Scoreboard(Player & left, Player & right, float gameDuration)
     : left_ (left), right_ (right), gameDuration_ (gameDuration)
 {
     remainingTime_ = gameDuration_ * 60.f;
@@ -45,7 +45,7 @@ Scoreboard::Scoreboard(Player * left, Player * right, float gameDuration)
     left_score.setCharacterSize(40);
     left_score.setPosition(300.f, 545.f);
     left_score.setFillColor(sf::Color::White);
-    left_score.setString(to_string(left_->score()));
+    left_score.setString(to_string(left_.score()));
 
     timer_.setFont(font_);
     timer_.setCharacterSize(40);
@@ -57,7 +57,7 @@ Scoreboard::Scoreboard(Player * left, Player * right, float gameDuration)
     right_score.setCharacterSize(40);
     right_score.setPosition(480.f, 545.f);
     right_score.setFillColor(sf::Color::White);
-    right_score.setString(to_string(right_->score()));
+    right_score.setString(to_string(right_.score()));
 
     right_name.setFont(font_);
     right_name.setCharacterSize(40);
@@ -75,16 +75,10 @@ string Scoreboard::time_line(float seconds)
     return t_;
 }
 
-void Scoreboard::update(float delta, bool & score_changed)
+void Scoreboard::update()
 {
-    if (score_changed)
-    {
-        left_score.setString(to_string(left_->score()));
-        right_score.setString(to_string(right_->score()));
-        score_changed = false;
-    }
-    remainingTime_ -= delta;
-    timer_.setString(time_line(remainingTime_));
+    left_score.setString(to_string(left_.score()));
+    right_score.setString(to_string(right_.score()));
 }
 
 void Scoreboard::render(sf::RenderWindow & window)

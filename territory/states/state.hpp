@@ -4,7 +4,7 @@
 
 namespace States
 {
-    enum Type
+    enum class Type
     {
         Preparation, Game, Result
     };
@@ -31,7 +31,7 @@ struct State
 
     void log()
     {
-        std::cout << type << " " << timeElapsed << "\n";
+        LOG(INFO) << "State " << static_cast<int>(type) << " " << timeElapsed << "\n";
     }
 
 protected:
@@ -61,8 +61,6 @@ struct StateGame : public State
     void render() override;
     void reset() override;
     States::Type switchTo() override;
-
-    unsigned max_score = 5;
 };
 
 struct StateResult : public State
@@ -70,6 +68,7 @@ struct StateResult : public State
     StateResult(States::Type type, World & world) : State (type, world) { }
 
     ~StateResult() { }
+    void update(const float delta) override;
     void render() override;
     States::Type switchTo() override;
 };

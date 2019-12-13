@@ -2,6 +2,12 @@
 
 #include "state.hpp"
 
+void StateResult::update(const float delta)
+{
+    State::update(delta);
+    world.board.update();
+}
+
 void StateResult::render()
 {
     world.mWindow.clear();

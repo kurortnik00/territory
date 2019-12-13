@@ -26,8 +26,7 @@ void StateGame::reset()
 
 States::Type StateGame::switchTo()
 {
-    if ((timeElapsed > 30.f) || (world.left.score() == max_score)
-            || (world.right.score() == max_score))
+    if (timeElapsed > 30.f)
     {
         return States::Type::Result;
     }
